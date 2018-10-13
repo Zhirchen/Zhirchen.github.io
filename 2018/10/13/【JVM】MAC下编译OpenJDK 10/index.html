@@ -195,25 +195,21 @@ AppStore中安装Xcode，笔者使用版本为：9.4.1。
 </li>
 <li><p>更改配置，<code>--with-boot-jdk</code>为Bootstrap JDK地址，<code>--disable-warnings-as-errors</code>可以忽略警告，<code>--with-target-bits=64</code> 指定JVM为64位。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bash configure --with-boot-jdk=/Library/Java/JavaVirtualMachines/jdk-10.0.2.jdk/Contents/Home --<span class="built_in">disable</span>-warnings-as-errors --with-target-bits=64</span><br></pre></td></tr></table></figure>
+<p>若配置成功，提示信息如下。</p>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/ED689EB1954499B9E60C3C51E47A3855.png" alt="配置成功">    </p>
 </li>
-</ol>
-<p>​    若配置成功，提示信息如下。​    </p>
-<p>​    <img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/ED689EB1954499B9E60C3C51E47A3855.png" alt="配置成功"></p>
-<ol start="5">
 <li><p>开始编译。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make images</span><br></pre></td></tr></table></figure>
 <p>编译过程中，CPU将会爆满，全量编译整个OpenJDK大概耗时12分钟，由于机器配置不同可能会导致编译时长有所差异。若编译成功，提示信息如下。</p>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/09C8DB4490FDC28AC013232FB7F17D47.png" alt="编译成功"></p>
+</li>
+<li><p>查看编译结果，位于<code>OpenJDK目录/build／macosx-x86_64-normal-server-release／</code>，如下。</p>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/FCB393143199407C224A3CF17C779A83.png" alt="编译结果"></p>
+</li>
+<li><p>查看编译结果的版本信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ./build/macosx-x86_64-normal-server-slowdebug/jdk/bin/java -version</span><br><span class="line">openjdk version <span class="string">"10-internal"</span> 2018-03-20</span><br><span class="line">OpenJDK Runtime Environment (build 10-internal+0-adhoc.wuzhi.openjdk)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 10-internal+0-adhoc.wuzhi.openjdk, mixed mode)</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>​    <img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/09C8DB4490FDC28AC013232FB7F17D47.png" alt="编译成功"></p>
-<ol start="6">
-<li>查看编译结果，位于<code>OpenJDK目录/build／macosx-x86_64-normal-server-release／</code>，如下。</li>
-</ol>
-<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/FCB393143199407C224A3CF17C779A83.png" alt="编译结果"></p>
-<ol start="7">
-<li>查看编译结果的版本信息。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ./build/macosx-x86_64-normal-server-slowdebug/jdk/bin/java -version</span><br><span class="line">openjdk version <span class="string">"10-internal"</span> 2018-03-20</span><br><span class="line">OpenJDK Runtime Environment (build 10-internal+0-adhoc.wuzhi.openjdk)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 10-internal+0-adhoc.wuzhi.openjdk, mixed mode)</span><br></pre></td></tr></table></figure>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
 <li><p><a href="http://www.cnblogs.com/taodeblog/p/8962645.html" target="_blank" rel="noopener">在Mac下自己编译出一个OpenJDK10——by -atao-</a></p>
 </li>
