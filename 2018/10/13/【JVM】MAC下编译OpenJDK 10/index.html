@@ -158,7 +158,7 @@ AppStore中安装Xcode，笔者使用版本为：9.4.1。
 
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="2018-10-13T15:36:00.000Z" class="post-list__meta--date date">2018-10-13</time> &#8226; <span class="post-meta__tags tags">于 
+      <time datetime="2018-10-13T08:46:00.000Z" class="post-list__meta--date date">2018-10-13</time> &#8226; <span class="post-meta__tags tags">于 
   <a class="tag-link" href="/tags/JVM/">JVM</a>, <a class="tag-link" href="/tags/深入理解JAVA虚拟机/">深入理解JAVA虚拟机</a>, <a class="tag-link" href="/tags/读书笔记/">读书笔记</a>
  </span>
       <span class="page-pv">
@@ -205,19 +205,18 @@ AppStore中安装Xcode，笔者使用版本为：9.4.1。
 </li>
 <li><p>更改配置，<code>--with-boot-jdk</code>为Bootstrap JDK地址，<code>--disable-warnings-as-errors</code>可以忽略警告，<code>--with-target-bits=64</code> 指定JVM为64位。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bash configure --with-boot-jdk=/Library/Java/JavaVirtualMachines/jdk-10.0.2.jdk/Contents/Home --<span class="built_in">disable</span>-warnings-as-errors --with-target-bits=64</span><br></pre></td></tr></table></figure>
+<p> 若配置成功，提示信息如下。​    </p>
 </li>
 </ol>
-<p>​    若配置成功，提示信息如下。​    </p>
 <p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/ED689EB1954499B9E60C3C51E47A3855.png" alt="配置成功"></p>
 <ol start="5">
 <li><p>开始编译。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make images</span><br></pre></td></tr></table></figure>
 <p>编译过程中，CPU将会爆满，全量编译整个OpenJDK大概耗时12分钟，由于机器配置不同可能会导致编译时长有所差异。若编译成功，提示信息如下。</p>
+<p> <img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/09C8DB4490FDC28AC013232FB7F17D47.png" alt="编译成功"></p>
 </li>
-</ol>
-<p>​    <img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/09C8DB4490FDC28AC013232FB7F17D47.png" alt="编译成功"></p>
-<ol start="6">
-<li>查看编译结果，位于<code>OpenJDK目录/build／macosx-x86_64-normal-server-release／</code>，如下。</li>
+<li><p>查看编译结果，位于<code>OpenJDK目录/build／macosx-x86_64-normal-server-release／</code>，如下。</p>
+</li>
 </ol>
 <p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/FCB393143199407C224A3CF17C779A83.png" alt="编译结果"></p>
 <ol start="7">
