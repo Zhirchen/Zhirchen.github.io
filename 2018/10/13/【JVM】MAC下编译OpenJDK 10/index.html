@@ -12,8 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta name="description" content="###环境准备
-
+    <meta name="description" content="##环境准备
 
 macOS系统版本：10.13.6。
 AppStore中安装Xcode，笔者使用版本为：9.4.1。
@@ -24,12 +23,11 @@ AppStore中安装Xcode，笔者使用版本为：9.4.1。
 1$ brew install freetype
 
 安装ccache「编译器缓存，可以提高Xcode的编译速度」。命令：
-1$ brew i">
+1$ brew ins">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="【JVM】MAC下编译OpenJDK 10 | 梧·枝">
-    <meta name="twitter:description" content="###环境准备
-
+    <meta name="twitter:description" content="##环境准备
 
 macOS系统版本：10.13.6。
 AppStore中安装Xcode，笔者使用版本为：9.4.1。
@@ -40,12 +38,11 @@ AppStore中安装Xcode，笔者使用版本为：9.4.1。
 1$ brew install freetype
 
 安装ccache「编译器缓存，可以提高Xcode的编译速度」。命令：
-1$ brew i">
+1$ brew ins">
 
     <meta property="og:type" content="article">
     <meta property="og:title" content="【JVM】MAC下编译OpenJDK 10 | 梧·枝">
-    <meta property="og:description" content="###环境准备
-
+    <meta property="og:description" content="##环境准备
 
 macOS系统版本：10.13.6。
 AppStore中安装Xcode，笔者使用版本为：9.4.1。
@@ -56,7 +53,7 @@ AppStore中安装Xcode，笔者使用版本为：9.4.1。
 1$ brew install freetype
 
 安装ccache「编译器缓存，可以提高Xcode的编译速度」。命令：
-1$ brew i">
+1$ brew ins">
 
     
     <meta name="author" content="梧枝">
@@ -170,8 +167,7 @@ AppStore中安装Xcode，笔者使用版本为：9.4.1。
   </header>
 
   <section class="post">
-    <p>###环境准备</p>
-<hr>
+    <p>##环境准备</p>
 <ol>
 <li>macOS系统版本：10.13.6。</li>
 <li><p>AppStore中安装Xcode，笔者使用版本为：9.4.1。</p>
@@ -189,8 +185,7 @@ AppStore中安装Xcode，笔者使用版本为：9.4.1。
 <li><p>安装<a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">JDK 10.0.2</a>「因OpenJDK中的大部分代码使用Java自身实现的，因此需要一个可用的JDK，官方称之为『Bootstrap JDK』，官网中现支持下载JDK 10.0.2和JDK 8u181两个版本，笔者曾使用JDK 8u181无法编译，提示版本过低，故此采用JDK 10.0.2」。</p>
 </li>
 </ol>
-<p>###构建</p>
-<hr>
+<p>##构建</p>
 <ol>
 <li><p>进入解压后的OpenJDK目录，笔者的地址为<code>/Users/wuzhi/JVM/openjdk</code>。</p>
 <p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20181013162037.png" alt="进入OpenJDK目录" title="进入OpenJDK目录"></p>
@@ -205,26 +200,26 @@ AppStore中安装Xcode，笔者使用版本为：9.4.1。
 </li>
 <li><p>更改配置，<code>--with-boot-jdk</code>为Bootstrap JDK地址，<code>--disable-warnings-as-errors</code>可以忽略警告，<code>--with-target-bits=64</code> 指定JVM为64位。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bash configure --with-boot-jdk=/Library/Java/JavaVirtualMachines/jdk-10.0.2.jdk/Contents/Home --<span class="built_in">disable</span>-warnings-as-errors --with-target-bits=64</span><br></pre></td></tr></table></figure>
-<p> 若配置成功，提示信息如下。​    </p>
 </li>
 </ol>
-<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/ED689EB1954499B9E60C3C51E47A3855.png" alt="配置成功"></p>
+<p>​    若配置成功，提示信息如下。​    </p>
+<p>​    <img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/ED689EB1954499B9E60C3C51E47A3855.png" alt="配置成功"></p>
 <ol start="5">
 <li><p>开始编译。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make images</span><br></pre></td></tr></table></figure>
 <p>编译过程中，CPU将会爆满，全量编译整个OpenJDK大概耗时12分钟，由于机器配置不同可能会导致编译时长有所差异。若编译成功，提示信息如下。</p>
-<p> <img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/09C8DB4490FDC28AC013232FB7F17D47.png" alt="编译成功"></p>
 </li>
-<li><p>查看编译结果，位于<code>OpenJDK目录/build／macosx-x86_64-normal-server-release／</code>，如下。</p>
-</li>
+</ol>
+<p>​    <img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/09C8DB4490FDC28AC013232FB7F17D47.png" alt="编译成功"></p>
+<ol start="6">
+<li>查看编译结果，位于<code>OpenJDK目录/build／macosx-x86_64-normal-server-release／</code>，如下。</li>
 </ol>
 <p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/FCB393143199407C224A3CF17C779A83.png" alt="编译结果"></p>
 <ol start="7">
 <li>查看编译结果的版本信息。</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ./build/macosx-x86_64-normal-server-slowdebug/jdk/bin/java -version</span><br><span class="line">openjdk version <span class="string">"10-internal"</span> 2018-03-20</span><br><span class="line">OpenJDK Runtime Environment (build 10-internal+0-adhoc.wuzhi.openjdk)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 10-internal+0-adhoc.wuzhi.openjdk, mixed mode)</span><br></pre></td></tr></table></figure>
-<p>###参考资料</p>
-<hr>
+<p>##参考资料</p>
 <ol>
 <li><p><a href="http://www.cnblogs.com/taodeblog/p/8962645.html" target="_blank" rel="noopener">在Mac下自己编译出一个OpenJDK10——by -atao-</a></p>
 </li>
