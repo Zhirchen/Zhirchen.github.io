@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>【JVM】MAC下编译OpenJDK 10 | 梧·枝</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="###环境准备
+
+
+macOS系统版本：10.13.6。
+AppStore中安装Xcode，笔者使用版本为：9.4.1。
+
+由于macOS没有官方的软件包管理器，使用HomeBrew填补。
+
+安装FileType「一个免费提供的软件库，用于渲染字体」。命令：
+1$ brew install freetype
+
+安装ccache「编译器缓存，可以提高Xcode的编译速度」。命令：
+1$ brew i">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="【JVM】MAC下编译OpenJDK 10 | 梧·枝">
+    <meta name="twitter:description" content="###环境准备
+
+
+macOS系统版本：10.13.6。
+AppStore中安装Xcode，笔者使用版本为：9.4.1。
+
+由于macOS没有官方的软件包管理器，使用HomeBrew填补。
+
+安装FileType「一个免费提供的软件库，用于渲染字体」。命令：
+1$ brew install freetype
+
+安装ccache「编译器缓存，可以提高Xcode的编译速度」。命令：
+1$ brew i">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="【JVM】MAC下编译OpenJDK 10 | 梧·枝">
+    <meta property="og:description" content="###环境准备
+
+
+macOS系统版本：10.13.6。
+AppStore中安装Xcode，笔者使用版本为：9.4.1。
+
+由于macOS没有官方的软件包管理器，使用HomeBrew填补。
+
+安装FileType「一个免费提供的软件库，用于渲染字体」。命令：
+1$ brew install freetype
+
+安装ccache「编译器缓存，可以提高Xcode的编译速度」。命令：
+1$ brew i">
+
+    
+    <meta name="author" content="梧枝">
+    
+    <link rel="stylesheet" href="/css/vno.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    
+    <link rel="icon" href="/images/avatar-small.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="https://ZhircheZhirchen.github.io/2018/10/13/【JVM】MAC下编译OpenJDK 10/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 梧·枝 的主页"><img src="/images/avatar.jpg" width="80" alt="梧·枝 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 梧·枝">梧·枝</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="Visit the blog" class="blog-button">Blog</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/Zhirchen" title="GitHub" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-blue"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2018-10-13T15:36:00.000Z" class="post-list__meta--date date">2018-10-13</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="tag-link" href="/tags/JVM/">JVM</a>, <a class="tag-link" href="/tags/深入理解JAVA虚拟机/">深入理解JAVA虚拟机</a>, <a class="tag-link" href="/tags/读书笔记/">读书笔记</a>
+ </span>
+      <span class="page-pv">
+       Read <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">【JVM】MAC下编译OpenJDK 10</h1>
+  </header>
+
+  <section class="post">
+    <p>###环境准备</p>
+<hr>
+<ol>
+<li>macOS系统版本：10.13.6。</li>
+<li><p>AppStore中安装Xcode，笔者使用版本为：9.4.1。</p>
+</li>
+<li><p>由于macOS没有官方的软件包管理器，使用<a href="https://brew.sh" target="_blank" rel="noopener">HomeBrew</a>填补。</p>
+</li>
+<li><p>安装FileType「一个免费提供的软件库，用于渲染字体」。命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install freetype</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装ccache「编译器缓存，可以提高Xcode的编译速度」。命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install ccache</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a href="https://download.java.net/openjdk/jdk10/ri/openjdk-10_src.zip" target="_blank" rel="noopener">OpenJDK 10</a>源码下载，并解压至无中文的目录。</p>
+</li>
+<li><p>安装<a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">JDK 10.0.2</a>「因OpenJDK中的大部分代码使用Java自身实现的，因此需要一个可用的JDK，官方称之为『Bootstrap JDK』，官网中现支持下载JDK 10.0.2和JDK 8u181两个版本，笔者曾使用JDK 8u181无法编译，提示版本过低，故此采用JDK 10.0.2」。</p>
+</li>
+</ol>
+<p>###构建</p>
+<hr>
+<ol>
+<li><p>进入解压后的OpenJDK目录，笔者的地址为<code>/Users/wuzhi/JVM/openjdk</code>。</p>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20181013162037.png" alt="进入OpenJDK目录" title="进入OpenJDK目录"></p>
+</li>
+<li><p>设定语言。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> LANG=C</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果之前设置了JAVA_HOME和CLASSPATH两个环境变量，编译前需取消，否则会编译报错。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">unset</span> JAVA_HAME</span><br><span class="line">$ <span class="built_in">unset</span> CLASSPATH</span><br></pre></td></tr></table></figure>
+<p>未取消环境变量时，编译报错如下。</p>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/E367129CE70A7713C9C7D7B63DA94E73.png" alt="编译报错" title="编译报错"></p>
+</li>
+<li><p>更改配置，<code>--with-boot-jdk</code>为Bootstrap JDK地址，<code>--disable-warnings-as-errors</code>可以忽略警告，<code>--with-target-bits=64</code> 指定JVM为64位。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bash configure --with-boot-jdk=/Library/Java/JavaVirtualMachines/jdk-10.0.2.jdk/Contents/Home --<span class="built_in">disable</span>-warnings-as-errors --with-target-bits=64</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>​    若配置成功，提示信息如下。​    </p>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/ED689EB1954499B9E60C3C51E47A3855.png" alt="配置成功"></p>
+<ol start="5">
+<li><p>开始编译。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make images</span><br></pre></td></tr></table></figure>
+<p>编译过程中，CPU将会爆满，全量编译整个OpenJDK大概耗时12分钟，由于机器配置不同可能会导致编译时长有所差异。若编译成功，提示信息如下。</p>
+</li>
+</ol>
+<p>​    <img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/09C8DB4490FDC28AC013232FB7F17D47.png" alt="编译成功"></p>
+<ol start="6">
+<li>查看编译结果，位于<code>OpenJDK目录/build／macosx-x86_64-normal-server-release／</code>，如下。</li>
+</ol>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/FCB393143199407C224A3CF17C779A83.png" alt="编译结果"></p>
+<ol start="7">
+<li>查看编译结果的版本信息。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ./build/macosx-x86_64-normal-server-slowdebug/jdk/bin/java -version</span><br><span class="line">openjdk version <span class="string">"10-internal"</span> 2018-03-20</span><br><span class="line">OpenJDK Runtime Environment (build 10-internal+0-adhoc.wuzhi.openjdk)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 10-internal+0-adhoc.wuzhi.openjdk, mixed mode)</span><br></pre></td></tr></table></figure>
+<p>###参考资料</p>
+<hr>
+<ol>
+<li><p><a href="http://www.cnblogs.com/taodeblog/p/8962645.html" target="_blank" rel="noopener">在Mac下自己编译出一个OpenJDK10——by -atao-</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/lcyy12138/article/details/78011175" target="_blank" rel="noopener">Java虚拟机学习笔记（一）macOS 10.12 编译JDK9——by 七弦生</a></p>
+</li>
+</ol>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Older Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2018/09/07/Day 1/" title="Day 1">Day 1</a></h2>
+                <p class="excerpt">
+                
+                今天下午开始搭建博客，半小时就成功了；而晚上一直在选择博客，弄到现在将近凌晨12点了。然后一直纠结主页图片用哪一张，找了将近两个小时……果然选择困难者患者
+
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-09-07T15:36:00.000Z" class="post-list__meta--date date">2018-09-07</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="tag-link" href="/tags/日常/">日常</a>
+</span><a class="btn-border-small" href="/2018/09/07/Day 1/">继续阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2018 梧枝 - 本站点采用 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a href="http://hexo.io">Hexo</a> 搭建，使用 <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
