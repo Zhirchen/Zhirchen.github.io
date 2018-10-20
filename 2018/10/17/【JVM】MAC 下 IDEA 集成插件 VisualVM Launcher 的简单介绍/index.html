@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     
-    <title>【JVM】MAC下IDEA集成插件VisualVM Launcher的简单介绍 | 梧·枝</title>
+    <title>【JVM】MAC 下 IDEA 集成插件 VisualVM Launcher 的简单介绍 | 梧·枝</title>
     <meta name="renderer" content="webkit">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -12,27 +12,27 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta name="description" content="《深入理解Java虚拟机》书中以及网上大部分博客对于堆转储文件分析使用的工具都是Eclipse Memory Analyzer，搜索许久，终于找到IDEA集成的一个内存映像分析插件VisualVM  Launcher（需先安装VisualVM）。
+    <meta name="description" content="《深入理解 Java 虚拟机》书中以及网上大部分博客对于堆转储文件分析使用的工具都是 Eclipse Memory Analyzer，搜索许久终于找到IDEA集成的一个内存映像分析插件 VisualVM  Launcher（需先安装 VisualVM ）。
 环境准备
-macOS系统版本：10.13.6。
+macOS 系统版本：10.13.6。
 
-IDEA安装版本：Intellij IDEA 2018.2 (Community Edition)">
+IDEA 安装版本：Intellij IDEA 2018.2 (Community Edi">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="【JVM】MAC下IDEA集成插件VisualVM Launcher的简单介绍 | 梧·枝">
-    <meta name="twitter:description" content="《深入理解Java虚拟机》书中以及网上大部分博客对于堆转储文件分析使用的工具都是Eclipse Memory Analyzer，搜索许久，终于找到IDEA集成的一个内存映像分析插件VisualVM  Launcher（需先安装VisualVM）。
+    <meta name="twitter:title" content="【JVM】MAC 下 IDEA 集成插件 VisualVM Launcher 的简单介绍 | 梧·枝">
+    <meta name="twitter:description" content="《深入理解 Java 虚拟机》书中以及网上大部分博客对于堆转储文件分析使用的工具都是 Eclipse Memory Analyzer，搜索许久终于找到IDEA集成的一个内存映像分析插件 VisualVM  Launcher（需先安装 VisualVM ）。
 环境准备
-macOS系统版本：10.13.6。
+macOS 系统版本：10.13.6。
 
-IDEA安装版本：Intellij IDEA 2018.2 (Community Edition)">
+IDEA 安装版本：Intellij IDEA 2018.2 (Community Edi">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="【JVM】MAC下IDEA集成插件VisualVM Launcher的简单介绍 | 梧·枝">
-    <meta property="og:description" content="《深入理解Java虚拟机》书中以及网上大部分博客对于堆转储文件分析使用的工具都是Eclipse Memory Analyzer，搜索许久，终于找到IDEA集成的一个内存映像分析插件VisualVM  Launcher（需先安装VisualVM）。
+    <meta property="og:title" content="【JVM】MAC 下 IDEA 集成插件 VisualVM Launcher 的简单介绍 | 梧·枝">
+    <meta property="og:description" content="《深入理解 Java 虚拟机》书中以及网上大部分博客对于堆转储文件分析使用的工具都是 Eclipse Memory Analyzer，搜索许久终于找到IDEA集成的一个内存映像分析插件 VisualVM  Launcher（需先安装 VisualVM ）。
 环境准备
-macOS系统版本：10.13.6。
+macOS 系统版本：10.13.6。
 
-IDEA安装版本：Intellij IDEA 2018.2 (Community Edition)">
+IDEA 安装版本：Intellij IDEA 2018.2 (Community Edi">
 
     
     <meta name="author" content="梧枝">
@@ -47,7 +47,7 @@ IDEA安装版本：Intellij IDEA 2018.2 (Community Edition)">
     <meta name="generator" content="hexo"/>
     
 
-    <link rel="canonical" href="https://ZhircheZhirchen.github.io/2018/10/17/【JVM】MAC下IDEA集成插件VisualVM Launcher的简单介绍/"/>
+    <link rel="canonical" href="https://ZhircheZhirchen.github.io/2018/10/17/【JVM】MAC 下 IDEA 集成插件 VisualVM Launcher 的简单介绍/"/>
 
                  
 </head>
@@ -142,26 +142,29 @@ IDEA安装版本：Intellij IDEA 2018.2 (Community Edition)">
       </span> 
    
     </div>
-    <h1 class="post-title">【JVM】MAC下IDEA集成插件VisualVM Launcher的简单介绍</h1>
+    <h1 class="post-title">【JVM】MAC 下 IDEA 集成插件 VisualVM Launcher 的简单介绍</h1>
   </header>
 
   <section class="post">
-    <p>《深入理解Java虚拟机》书中以及网上大部分博客对于堆转储文件分析使用的工具都是Eclipse Memory Analyzer，搜索许久，终于找到IDEA集成的一个内存映像分析插件VisualVM  Launcher（需先安装VisualVM）。</p>
+    <p>《深入理解 Java 虚拟机》书中以及网上大部分博客对于堆转储文件分析使用的工具都是 Eclipse Memory Analyzer，搜索许久终于找到IDEA集成的一个内存映像分析插件 VisualVM  Launcher（需先安装 VisualVM ）。</p>
 <h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ol>
-<li><p>macOS系统版本：10.13.6。</p>
+<li><p>macOS 系统版本：10.13.6。</p>
 </li>
-<li><p>IDEA安装版本：<a href="https://www.jetbrains.com/idea/download/#section=mac" target="_blank" rel="noopener">Intellij IDEA 2018.2 (Community Edition)</a></p>
+<li><p>IDEA 安装版本：<a href="https://www.jetbrains.com/idea/download/#section=mac" target="_blank" rel="noopener">Intellij IDEA 2018.2 (Community Edition)</a></p>
 </li>
-<li><p>VisualVM安装版本：<a href="https://visualvm.github.io/download.html" target="_blank" rel="noopener">VisualVM 1.4.2</a></p>
-<p>插件安装，选择<a href="https://visualvm.github.io/pluginscenters.html" target="_blank" rel="noopener">可用的版本</a>，笔者用的是<a href="https://visualvm.github.io/uc/release14/updates.xml.gz" target="_blank" rel="noopener">https://visualvm.github.io/uc/release14/updates.xml.gz</a></p>
+<li><p>VisualVM 安装版本：<a href="https://visualvm.github.io/download.html" target="_blank" rel="noopener">VisualVM 1.4.2</a></p>
+<p>插件安装，选择<a href="https://visualvm.github.io/pluginscenters.html" target="_blank" rel="noopener">可用的版本</a>，笔者用的是 <a href="https://visualvm.github.io/uc/release14/updates.xml.gz" target="_blank" rel="noopener">https://visualvm.github.io/uc/release14/updates.xml.gz</a></p>
 <p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20181017222259.png" alt="选择版本"></p>
 </li>
 </ol>
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ol>
-<li><p>IDEA安装插件VisualVM Launcher</p>
+<li><p>IDEA 安装插件 VisualVM Launcher</p>
 <p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20181017221221.png" alt="VisualVM Launcher"></p>
 </li>
-<li><p>IDEA中打开VisualVM</p>
+<li><p>VisualVM Launcher 配置，VisualVM executable 选择 VisualVM 安装地址</p>
+<p><img src="/Users/wuzhi/Library/Application Support/typora-user-images/image-20181020134306670.png" alt="VisualVM Launcher 配置"></p>
+</li>
+<li><p>IDEA 中打开 VisualVM</p>
 <p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20181017221734.png" alt="打开VisualVM"></p>
 </li>
 </ol>
