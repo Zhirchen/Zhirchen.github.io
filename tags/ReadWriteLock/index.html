@@ -124,85 +124,23 @@
   
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/10/17/【JVM】MAC下IDEA集成插件VisualVM Launcher的简单介绍/" title="link to post.title">【JVM】MAC下IDEA集成插件VisualVM Launcher的简单介绍</a></h2>
+      <h2 class="post-list__post-title post-title"><a href="/2019/09/28/【并发】【编程题】ReadWriteLock/" title="link to post.title">【并发】【编程题】ReadWriteLock</a></h2>
       <p class="excerpt">
     
-      《深入理解 Java 虚拟机》书中以及网上大部分博客对于堆转储文件分析使用的工具都是 Eclipse Memory Analyzer，搜索许久终于找到IDEA集成的一个内存映像分析插件 VisualVM  Launcher（需先安装 VisualVM ）。
-环境准备
-macOS 系统版本：10.13.6。
-
-IDEA 安装版本：Intellij IDEA 2018.2 (Community Edi
+      题目ReentrantReadWriteLock会发生写饥饿的情况吗？如果发生，有没有比较好的解决办法？
+解答1、ReentrantReadWriteLock会发生写饥饿的情况吗？
+因为可以允许多个线程同时读，如果高并发情况下，读操作获取到读锁后，就可能出现一直不断的有读操作进入临界区，一直不释放读锁，造成写操作阻塞，所以可以通过高并发读操作来确定ReentrantReadWriteLock是否会
     &hellip;
       </p>
-      <div class="post-list__meta"><time datetime="2018-10-17T14:24:00.000Z" class="post-list__meta--date date">2018-10-17</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="tag-link" href="/tags/JVM/">JVM</a>, <a class="tag-link" href="/tags/深入理解JAVA虚拟机/">深入理解JAVA虚拟机</a>, <a class="tag-link" href="/tags/读书笔记/">读书笔记</a>
-</span><a class="btn-border-small" href="/2018/10/17/【JVM】MAC下IDEA集成插件VisualVM Launcher的简单介绍/">继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/10/13/【JVM】MAC下搭建OpenJDK 10调试环境/" title="link to post.title">【JVM】MAC下搭建OpenJDK 10调试环境</a></h2>
-      <p class="excerpt">
-    
-      在深入了解JVM、阅读OpenJDK源码的过程中，经常需要通过Debug来帮助理解。《深入理解Java虚拟机》书中介绍的是OpenJDK 7，远低于当前的版本，笔者实际搭建OpenJDK 10调试环境的过程比书中OpenJDK 7的调试步骤简单太多，时代在进步啊。
-环境准备
-macOS系统版本：10.13.6。
-由于HotSpot虚拟机使用C++语言编写，需要安装Clion。
-OpenJDK 10
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2018-10-13T13:36:00.000Z" class="post-list__meta--date date">2018-10-13</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="tag-link" href="/tags/JVM/">JVM</a>, <a class="tag-link" href="/tags/深入理解JAVA虚拟机/">深入理解JAVA虚拟机</a>, <a class="tag-link" href="/tags/读书笔记/">读书笔记</a>
-</span><a class="btn-border-small" href="/2018/10/13/【JVM】MAC下搭建OpenJDK 10调试环境/">继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/10/13/【JVM】MAC下编译OpenJDK 10/" title="link to post.title">【JVM】MAC下编译OpenJDK 10</a></h2>
-      <p class="excerpt">
-    
-      最近学习《深入理解Java虚拟机》，书中第一章便是手动编译JDK，可书中使用的OpenJDK 7版本比较老旧，笔者便结合书本与博客开始手动编译OpenJDK 10，不得不说最后成功显示带有自己名字的JDK版本时，挺自豪的～
-环境准备
-macOS系统版本：10.13.6。
-AppStore中安装Xcode，笔者使用版本为：9.4.1。
-
-由于macOS没有官方的软件包管理器，使用HomeBrew填补
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2018-10-13T08:46:00.000Z" class="post-list__meta--date date">2018-10-13</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="tag-link" href="/tags/JVM/">JVM</a>, <a class="tag-link" href="/tags/深入理解JAVA虚拟机/">深入理解JAVA虚拟机</a>, <a class="tag-link" href="/tags/读书笔记/">读书笔记</a>
-</span><a class="btn-border-small" href="/2018/10/13/【JVM】MAC下编译OpenJDK 10/">继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2018/09/07/【随笔】Day 1/" title="link to post.title">【随笔】Day 1</a></h2>
-      <p class="excerpt">
-    
-      今天下午开始搭建博客，半小时就成功了；而晚上一直在选择博客，弄到现在将近凌晨12点了。然后一直纠结主页图片用哪一张，找了将近两个小时……果然选择困难者患者
-
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2018-09-07T15:36:00.000Z" class="post-list__meta--date date">2018-09-07</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="tag-link" href="/tags/日常随笔/">日常随笔</a>
-</span><a class="btn-border-small" href="/2018/09/07/【随笔】Day 1/">继续阅读</a></div>
+      <div class="post-list__meta"><time datetime="2019-09-28T09:09:00.000Z" class="post-list__meta--date date">2019-09-28</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="tag-link" href="/tags/Java/">Java</a>, <a class="tag-link" href="/tags/Lock/">Lock</a>, <a class="tag-link" href="/tags/ReadWriteLock/">ReadWriteLock</a>, <a class="tag-link" href="/tags/多线程/">多线程</a>, <a class="tag-link" href="/tags/并发/">并发</a>, <a class="tag-link" href="/tags/编程题/">编程题</a>
+</span><a class="btn-border-small" href="/2019/09/28/【并发】【编程题】ReadWriteLock/">继续阅读</a></div>
       <hr class="post-list__divider" />
     </li>
   
     
   </ol>
 
-
-  <nav class="pagination" role="navigation">
-    
-      <a class="older-posts pagination__newer btn btn-small btn-tertiary" href="/#blog">&larr; Prev</a>
-    
-    <span class="pagination__page-number" >  2 / 2 </span>
-    
-  </nav>
 
  <script type="text/x-mathjax-config">
     MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
