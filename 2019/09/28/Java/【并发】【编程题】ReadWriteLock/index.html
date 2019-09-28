@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>【并发】【编程题】ReadWriteLock | 梧·枝</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="题目ReentrantReadWriteLock会发生写饥饿的情况吗？如果发生，有没有比较好的解决办法？
+解答1、ReentrantReadWriteLock会发生写饥饿的情况吗？
+因为可以允许多个线程同时读，如果高并发情况下，读操作获取到读锁后，就可能出现一直不断的有读操作进入临界区，一直不释放读锁，造成写操作阻塞，所以可以通过高并发读操作来确定ReentrantReadWriteLock是否会">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="【并发】【编程题】ReadWriteLock | 梧·枝">
+    <meta name="twitter:description" content="题目ReentrantReadWriteLock会发生写饥饿的情况吗？如果发生，有没有比较好的解决办法？
+解答1、ReentrantReadWriteLock会发生写饥饿的情况吗？
+因为可以允许多个线程同时读，如果高并发情况下，读操作获取到读锁后，就可能出现一直不断的有读操作进入临界区，一直不释放读锁，造成写操作阻塞，所以可以通过高并发读操作来确定ReentrantReadWriteLock是否会">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="【并发】【编程题】ReadWriteLock | 梧·枝">
+    <meta property="og:description" content="题目ReentrantReadWriteLock会发生写饥饿的情况吗？如果发生，有没有比较好的解决办法？
+解答1、ReentrantReadWriteLock会发生写饥饿的情况吗？
+因为可以允许多个线程同时读，如果高并发情况下，读操作获取到读锁后，就可能出现一直不断的有读操作进入临界区，一直不释放读锁，造成写操作阻塞，所以可以通过高并发读操作来确定ReentrantReadWriteLock是否会">
+
+    
+    <meta name="author" content="梧枝">
+    
+    <link rel="stylesheet" href="/css/vno.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    
+    <link rel="icon" href="/images/avatar-small.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="https://ZhircheZhirchen.github.io/2019/09/28/Java/【并发】【编程题】ReadWriteLock/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 梧·枝 的主页"><img src="/images/avatar.jpg" width="80" alt="梧·枝 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 梧·枝">梧·枝</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="Visit the blog" class="blog-button">Blog</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/Zhirchen" title="GitHub" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-blue"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-09-28T09:09:00.000Z" class="post-list__meta--date date">2019-09-28</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="tag-link" href="/tags/Java/">Java</a>, <a class="tag-link" href="/tags/Lock/">Lock</a>, <a class="tag-link" href="/tags/ReadWriteLock/">ReadWriteLock</a>, <a class="tag-link" href="/tags/多线程/">多线程</a>, <a class="tag-link" href="/tags/并发/">并发</a>, <a class="tag-link" href="/tags/编程题/">编程题</a>
+ </span>
+      <span class="page-pv">
+       Read <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">【并发】【编程题】ReadWriteLock</h1>
+  </header>
+
+  <section class="post">
+    <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>ReentrantReadWriteLock会发生写饥饿的情况吗？如果发生，有没有比较好的解决办法？</p>
+<h3 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h3><p>1、ReentrantReadWriteLock会发生写饥饿的情况吗？</p>
+<p>因为可以允许多个线程同时读，如果高并发情况下，读操作获取到读锁后，就可能出现一直不断的有读操作进入临界区，一直不释放读锁，造成写操作阻塞，所以可以通过高并发读操作来确定ReentrantReadWriteLock是否会发生写饥饿情况。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> readwritelock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantReadWriteLock;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 题目：ReentrantReadWriteLock会发生写饥饿的情况吗？如果发生，有没有比较好的解决办法？</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteLockDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SimpleDateFormat DF = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss SSS"</span>);</span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; dataList = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ReentrantReadWriteLock lock = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getDataByIndex</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span> + Thread.currentThread().getName()</span><br><span class="line">                + <span class="string">"] [Try Read] index : "</span> + index);</span><br><span class="line">        lock.readLock().lock();</span><br><span class="line">        System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span> + Thread.currentThread().getName()</span><br><span class="line">                + <span class="string">"] [Get Read] index : "</span> + index);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (dataList.size() &lt;= index) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> dataList.get(index);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.readLock().unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addData</span><span class="params">(<span class="keyword">int</span> index, String data)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span> + Thread.currentThread().getName()</span><br><span class="line">                + <span class="string">"] [Try Write] Index: "</span> + index</span><br><span class="line">                + <span class="string">" data : "</span> + data);</span><br><span class="line">        lock.writeLock().lock();</span><br><span class="line">        System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span> + Thread.currentThread().getName()</span><br><span class="line">                + <span class="string">"] [Get Write] Index: "</span> + index</span><br><span class="line">                + <span class="string">" data : "</span> + data);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            dataList.add(data);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.writeLock().unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟并发读</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> readTimes 并发次数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loopRead</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> readTimes)</span> </span>&#123;</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">20</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; readTimes; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> finalI = i;</span><br><span class="line">            executorService.submit(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    sleep();</span><br><span class="line">                    String data = getDataByIndex(finalI);</span><br><span class="line">                    System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span></span><br><span class="line">                            + Thread.currentThread().getName()</span><br><span class="line">                            + <span class="string">"] [Read Success] Index:"</span> + finalI</span><br><span class="line">                            + <span class="string">",Data:"</span> + data);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  模拟并发写</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> writeTimes  并发次数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loopWrite</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> writeTimes)</span> </span>&#123;</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">10</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; writeTimes; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> finalI = i;</span><br><span class="line">            executorService.submit(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    sleep();</span><br><span class="line">                    String data = DF.format(<span class="keyword">new</span> Date());</span><br><span class="line">                    addData(finalI, data);</span><br><span class="line">                    System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span></span><br><span class="line">                            + Thread.currentThread().getName()</span><br><span class="line">                            + <span class="string">"]"</span> + <span class="string">" [Write Success] Index: "</span> + finalI + <span class="string">" Data:"</span> + data);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 随机sleep，更真实模拟并发场景</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> l = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">int</span> sleepTime = (<span class="keyword">int</span>) l % <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(sleepTime);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ReadWriteLockDemo demo = <span class="keyword">new</span> ReadWriteLockDemo();</span><br><span class="line">        demo.loopRead(<span class="number">100000</span>);</span><br><span class="line">        demo.loopWrite(<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>部分运行日志如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[2019-09-28 17:02:01 083][pool-2-thread-2] [Try Write] Index: 1 data : 2019-09-28 17:02:01 083</span><br><span class="line">[2019-09-28 17:02:01 083][pool-2-thread-1] [Try Write] Index: 0 data : 2019-09-28 17:02:01 083</span><br><span class="line">[2019-09-28 17:02:01 084][pool-1-thread-8] [Try Read] index : 701</span><br><span class="line">[2019-09-28 17:02:01 084][pool-1-thread-10] [Try Read] index : 700</span><br><span class="line">[2019-09-28 17:02:01 084][pool-1-thread-8] [Get Read] index : 701</span><br><span class="line">[2019-09-28 17:02:01 084][pool-1-thread-8] [Read Success] Index:701,Data:</span><br><span class="line">[2019-09-28 17:02:01 084][pool-1-thread-5] [Try Read] index : 698</span><br><span class="line">[2019-09-28 17:02:01 084][pool-1-thread-9] [Try Read] index : 699</span><br><span class="line">[2019-09-28 17:02:01 084][pool-2-thread-6] [Try Write] Index: 5 data : 2019-09-28 17:02:01 084</span><br><span class="line">[2019-09-28 17:02:01 084][pool-2-thread-5] [Try Write] Index: 4 data : 2019-09-28 17:02:01 084</span><br><span class="line">[2019-09-28 17:02:01 084][pool-1-thread-9] [Get Read] index : 699</span><br><span class="line">[2019-09-28 17:02:01 084][pool-1-thread-15] [Try Read] index : 697</span><br><span class="line">[2019-09-28 17:02:01 084][pool-1-thread-9] [Read Success] Index:699,Data:</span><br><span class="line">……</span><br><span class="line">[2019-09-28 17:02:01 090][pool-2-thread-4] [Try Write] Index: 3 data : 2019-09-28 17:02:01 090</span><br><span class="line">[2019-09-28 17:02:01 090][pool-2-thread-2] [Get Write] Index: 1 data : 2019-09-28 17:02:01 083</span><br><span class="line">[2019-09-28 17:02:01 090][pool-2-thread-3] [Try Write] Index: 2 data : 2019-09-28 17:02:01 090</span><br><span class="line">[2019-09-28 17:02:01 090][pool-2-thread-1] [Get Write] Index: 0 data : 2019-09-28 17:02:01 083</span><br><span class="line">[2019-09-28 17:02:01 090][pool-2-thread-2] [Write Success] Index: 1 Data:2019-09-28 17:02:01 083</span><br><span class="line">[2019-09-28 17:02:01 090][pool-2-thread-5] [Get Write] Index: 4 data : 2019-09-28 17:02:01 084</span><br><span class="line">[2019-09-28 17:02:01 090][pool-2-thread-1] [Write Success] Index: 0 Data:2019-09-28 17:02:01 083</span><br></pre></td></tr></table></figure>
+<p>可以看到 Index = 1的写线程虽然早于 Index = 701的读线程去尝试获取锁，但直到7毫秒后在没有读操作的时候，才获取到写锁；由此可以看出，ReentrantReadWriteLock确实会发生写饥饿，在读操作并发量越大时，越不容易获取到写锁。</p>
+<p>2、那怎么让写操作优先于读操作？即怎么解决写饥饿情况？</p>
+<p>很明显，我们可以在每次读操作前，判断有没有写操作在排队等候获取写锁，如果有，则阻塞当前线程，使写操作优先执行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> readwritelock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantReadWriteLock;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 题目：ReentrantReadWriteLock会发生写饥饿的情况吗？如果发生，有没有比较好的解决办法？</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteLockDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SimpleDateFormat DF = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss SSS"</span>);</span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; dataList = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger writeNum = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ReentrantReadWriteLock lock = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getDataByIndex</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span> + Thread.currentThread().getName()</span><br><span class="line">                + <span class="string">"] [Try Read] index : "</span> + index);</span><br><span class="line">        <span class="comment">// 优先处理写</span></span><br><span class="line">        <span class="keyword">while</span> (writeNum.get() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">10</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        lock.readLock().lock();</span><br><span class="line">        System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span> + Thread.currentThread().getName()</span><br><span class="line">                + <span class="string">"] [Get Read] index : "</span> + index);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (dataList.size() &lt;= index) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> dataList.get(index);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.readLock().unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addData</span><span class="params">(<span class="keyword">int</span> index, String data)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span> + Thread.currentThread().getName()</span><br><span class="line">                + <span class="string">"] [Try Write] Index: "</span> + index</span><br><span class="line">                + <span class="string">" data : "</span> + data);</span><br><span class="line">        writeNum.incrementAndGet();</span><br><span class="line">        lock.writeLock().lock();</span><br><span class="line">        System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span> + Thread.currentThread().getName()</span><br><span class="line">                + <span class="string">"] [Get Write] Index: "</span> + index</span><br><span class="line">                + <span class="string">" data : "</span> + data);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            writeNum.decrementAndGet();</span><br><span class="line">            dataList.add(data);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.writeLock().unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟并发读</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> readTimes 并发次数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loopRead</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> readTimes)</span> </span>&#123;</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">20</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; readTimes; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> finalI = i;</span><br><span class="line">            executorService.submit(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    sleep();</span><br><span class="line">                    String data = getDataByIndex(finalI);</span><br><span class="line">                    System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span></span><br><span class="line">                            + Thread.currentThread().getName()</span><br><span class="line">                            + <span class="string">"] [Read Success] Index:"</span> + finalI</span><br><span class="line">                            + <span class="string">",Data:"</span> + data);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  模拟并发写</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> writeTimes  并发次数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loopWrite</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> writeTimes)</span> </span>&#123;</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">10</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; writeTimes; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> finalI = i;</span><br><span class="line">            executorService.submit(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    sleep();</span><br><span class="line">                    String data = DF.format(<span class="keyword">new</span> Date());</span><br><span class="line">                    addData(finalI, data);</span><br><span class="line">                    System.out.println(<span class="string">"["</span> + DF.format(<span class="keyword">new</span> Date()) + <span class="string">"]["</span></span><br><span class="line">                            + Thread.currentThread().getName()</span><br><span class="line">                            + <span class="string">"]"</span> + <span class="string">" [Write Success] Index: "</span> + finalI + <span class="string">" Data:"</span> + data);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 随机sleep，更真实模拟并发场景</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> l = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">int</span> sleepTime = (<span class="keyword">int</span>) l % <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(sleepTime);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ReadWriteLockDemo demo = <span class="keyword">new</span> ReadWriteLockDemo();</span><br><span class="line">        demo.loopRead(<span class="number">100000</span>);</span><br><span class="line">        demo.loopWrite(<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在代码18行处，我们增加了一个原子类变量writeNum，用来标示当前正在排队的写操作线程数，当writeNum&lt;=0 时，才继续执行当前读操作。</p>
+<p>部分日志如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[2019-09-28 17:35:29 437][pool-1-thread-9] [Try Read] index : 659</span><br><span class="line">[2019-09-28 17:35:29 437][pool-1-thread-9] [Get Read] index : 659</span><br><span class="line">[2019-09-28 17:35:29 437][pool-1-thread-9] [Read Success] Index:659,Data:</span><br><span class="line">[2019-09-28 17:35:29 437][pool-2-thread-5] [Try Write] Index: 79 data : 2019-09-28 17:35:29 437</span><br><span class="line">[2019-09-28 17:35:29 437][pool-1-thread-7] [Try Read] index : 661</span><br><span class="line">[2019-09-28 17:35:29 437][pool-2-thread-5] [Get Write] Index: 79 data : 2019-09-28 17:35:29 437</span><br><span class="line">[2019-09-28 17:35:29 437][pool-2-thread-5] [Write Success] Index: 79 Data:2019-09-28 17:35:29 437</span><br><span class="line">[2019-09-28 17:35:29 437][pool-1-thread-18] [Try Read] index : 663</span><br><span class="line">[2019-09-28 17:35:29 437][pool-1-thread-18] [Get Read] index : 663</span><br><span class="line">[2019-09-28 17:35:29 437][pool-1-thread-18] [Read Success] Index:663,Data:</span><br><span class="line">……</span><br><span class="line">[2019-09-28 17:35:29 447][pool-1-thread-7] [Get Read] index : 661</span><br><span class="line">[2019-09-28 17:35:29 447][pool-1-thread-16] [Get Read] index : 695</span><br><span class="line">[2019-09-28 17:35:29 448][pool-1-thread-7] [Read Success] Index:661,Data:</span><br></pre></td></tr></table></figure>
+<p>可以看出index = 661的读线程判断有index = 79的写线程排队时，便阻塞自己，使写线程优先执行，事实上可以看出index = 661的读线程获取到读锁的时间刚好是我们设置的10毫秒之后，因此有写操作排队的情况下，优先执行写操作，没有出现写饥饿。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Newer Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2019/09/28/持续行动/【持续行动】【瘦下来】Day 8～12/" title="【持续行动】【瘦下来】Day 8~12">【持续行动】【瘦下来】Day 8~12</a></h2>
+                <p class="excerpt">
+                
+                【Day 12】2019-09-27【9月27日】持续行动第7期瘦下来第12天
+初始体重：55kg
+目标体重：49kg
+今晨体重：52.7kg
+睡前体重：52.2kg
+早餐：两个煎鸡蛋，200ml防弹咖啡
+午餐：蚝油娃娃菜，番茄炒蛋，炒丝瓜
+加餐：400ml豆浆，20g辣条
+晚餐：半个鸡蛋煎饼
+补
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-09-28T09:53:00.000Z" class="post-list__meta--date date">2019-09-28</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="tag-link" href="/tags/scalers/">scalers</a>, <a class="tag-link" href="/tags/打卡/">打卡</a>, <a class="tag-link" href="/tags/持续行动/">持续行动</a>, <a class="tag-link" href="/tags/瘦下来/">瘦下来</a>
+</span><a class="btn-border-small" href="/2019/09/28/持续行动/【持续行动】【瘦下来】Day 8～12/">继续阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Older Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2019/09/22/持续行动/【持续行动】【瘦下来】Day 7/" title="【持续行动】【瘦下来】Day 7">【持续行动】【瘦下来】Day 7</a></h2>
+                <p class="excerpt">
+                
+                【Day 7】2019-09-22【9月22日】持续行动第7期瘦下来第7天
+初始体重：55kg
+目标体重：49kg
+今晨体重：53.8kg
+睡前体重：53.65kg
+早餐：两个鸡蛋、200ml 防弹咖啡
+午餐：青椒牛肉，爆炒花甲，花甲冬瓜汤（冬瓜吃的有点多），菠菜
+加餐：黑咖啡
+晚餐：一块牛排，一点
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-09-22T14:04:00.000Z" class="post-list__meta--date date">2019-09-22</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="tag-link" href="/tags/scalers/">scalers</a>, <a class="tag-link" href="/tags/打卡/">打卡</a>, <a class="tag-link" href="/tags/持续行动/">持续行动</a>, <a class="tag-link" href="/tags/瘦下来/">瘦下来</a>
+</span><a class="btn-border-small" href="/2019/09/22/持续行动/【持续行动】【瘦下来】Day 7/">继续阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2019 梧枝 - 本站点采用 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a href="http://hexo.io">Hexo</a> 搭建，使用 <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
