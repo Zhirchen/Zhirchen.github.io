@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>梧·枝</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="在 LTE 中，UE 需要获取小区的 MIB、SIB1 和 SIB2，才可以接入小区。在 NR 中，协议将 MIB 以外“必备”的 SIB 称为 RMSI —— Remaining Minimum System Information（在R15中，RMSI等同于SIB1），即 UE 获取小区的 MIB、RMSI ，才可以接入小区。下面开始寻找 MIB 和 RMSI 之旅。系统信息分两种，MIB 和">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="梧·枝">
+    <meta name="twitter:description" content="在 LTE 中，UE 需要获取小区的 MIB、SIB1 和 SIB2，才可以接入小区。在 NR 中，协议将 MIB 以外“必备”的 SIB 称为 RMSI —— Remaining Minimum System Information（在R15中，RMSI等同于SIB1），即 UE 获取小区的 MIB、RMSI ，才可以接入小区。下面开始寻找 MIB 和 RMSI 之旅。系统信息分两种，MIB 和">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="梧·枝">
+    <meta property="og:description" content="在 LTE 中，UE 需要获取小区的 MIB、SIB1 和 SIB2，才可以接入小区。在 NR 中，协议将 MIB 以外“必备”的 SIB 称为 RMSI —— Remaining Minimum System Information（在R15中，RMSI等同于SIB1），即 UE 获取小区的 MIB、RMSI ，才可以接入小区。下面开始寻找 MIB 和 RMSI 之旅。系统信息分两种，MIB 和">
+
+    
+    <meta name="author" content="梧枝">
+    
+    <link rel="stylesheet" href="/css/vno.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    
+    <link rel="icon" href="/images/avatar-small.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="https://ZhircheZhirchen.github.io/2020/04/12/5G/小区搜索复盘/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 梧·枝 的主页"><img src="/images/avatar.jpg" width="80" alt="梧·枝 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 梧·枝">梧·枝</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="Visit the blog" class="blog-button">Blog</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/Zhirchen" title="GitHub" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-blue"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2020-04-12T07:46:38.061Z" class="post-list__meta--date date">2020-04-12</time> &#8226; <span class="post-meta__tags tags">于  </span>
+      <span class="page-pv">
+       Read <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title"></h1>
+  </header>
+
+  <section class="post">
+    <p>在 LTE 中，UE 需要获取小区的 MIB、SIB1 和 SIB2，才可以接入小区。在 NR 中，协议将 MIB 以外“必备”的 SIB 称为 RMSI —— Remaining Minimum System Information<font color="#808080">（在R15中，RMSI等同于SIB1）</font>，即 UE 获取小区的 MIB、RMSI ，才可以接入小区。下面开始寻找 MIB 和 RMSI 之旅。系统信息分两种，MIB 和 SIB。PBCH 最终承载的只是 MIB，而 SIB 在物理层都走在 PDSCH。</p>
+<p>###1 获取 PCI</p>
+<p>由于 PBCH 和其他信道都是使用 PCI<font color="#808080">（Physical Cell Identifier，物理小区 ID）</font> 进行加扰的，所以在小区搜索的第一步就是获取 PCI 信息。</p>
+<p>PCI 的信息，需要从 PSS<font color="#808080">（Primary Synchronization Signal，主同步信号）</font>和 SSS<font color="#808080">（Secondary Synchronization Signal，辅同步信号）</font>中获取：N_cell_ID = 3 x N_(1)_ID + N_(2)_ID，而 PSS、SSS、PBCH<font color="#808080">（Physical Broadcast Channel，物理广播信道）</font>捆绑在一起，形成固定的样式，称为 SS/PBCH Block，即 SSB。因此，获取 PCI 的第一步就是找到 SSB。</p>
+<h4 id="1-1-寻找-SSB"><a href="#1-1-寻找-SSB" class="headerlink" title="1.1 寻找 SSB"></a>1.1 寻找 SSB</h4><p>在 NR 中，SSB 的位置不是固定的，NR 的频率范围也大幅增加，UE 不可能按照信道栅格来搜索 SSB；NR 引入了同步栅格和同步信道的概念，同步栅格的间隔远大于信道栅格。同步信道使用 GSCN<font color="#808080">（  Global Synchronization Channel Number，全局同步信道号）</font>进行识别。SSB  参考频率和 GSCN 有如下对应关系：<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412160500.png" alt=""></p>
+<p>这里，小区搜索到了信号，对应的也就知道了频率，查询上表，也就可以推算出范围 SSB 的搜索范围。<font color="#808080">（欢迎拍砖，这一段话是我个人理解，不一定正确。）</font></p>
+<p>SSB 由 PSS、SSS、PBCH 构成，固定样式如下<font color="#808080">（图中左边竖轴的 47 应为 48，192 应为191）</font>，PSS 位于 SSB 的第一个时隙的中间，占用序号为 56 ～ 182 的共计 127 个 SC，序号为 120 的 SC 的中心频率，就是 SSB 的 GCSN 对应的参考频率：<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412161120.png" alt=""></p>
+<h5 id="1-1-1-PSS（获取-PCI-信息中的-N-2-ID）"><a href="#1-1-1-PSS（获取-PCI-信息中的-N-2-ID）" class="headerlink" title="1.1.1 PSS（获取 PCI 信息中的 N_(2)_ID）"></a>1.1.1 PSS<font color="#808080">（获取 PCI 信息中的 N_(2)_ID）</font></h5><p>PSS 占用 127 个SC，是一个伪随机序列。序列生成的步骤如下：<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412162111.png" alt=""></p>
+<p>第一步：得到一个初始序列。x(0)~x(7) 初值固定为0、1、1、0、1、1、1；由 x(i + 7) = (x(i + 4) + x(i)) mod 2 可得出一个长度为 127 的固定序列。</p>
+<p>第二步：对初始序列进行循环移位。N_(2)_ID 取值为 {0,1,2}，将 127 个 SC 平分成 3 段，每段的 SC 序号则为0，43<font color="#808080">（⌈127/3⌉ x 1，⌈⌉ 代表向上取整）</font> 和 86<font color="#808080">（⌈127/3⌉ x 2）</font>。故知晓初始序列移位的 SC 数，即可得到 N_(2)_ID。</p>
+<p>第三步：BPSK<font color="#808080">（Binary Phase Shift Keying，二进制相移键控）</font>调制。输入 0 ，输出 +1；输入 1，输出 -1。</p>
+<p>由上可知，当 UE 检测出固定的 PSS 序列<font color="#808080">（只有 3 种可能）</font>后，根据得到的 PSS 序列和 初始序列相比较，便可知循环移位的 SC 数，即得到了 N_(2)_ID。</p>
+<h5 id="1-1-2-SSS（获取-PCI-信息中的-N-1-ID）"><a href="#1-1-2-SSS（获取-PCI-信息中的-N-1-ID）" class="headerlink" title="1.1.2 SSS（获取 PCI 信息中的 N_(1)_ID）"></a>1.1.2 SSS<font color="#808080">（获取 PCI 信息中的 N_(1)_ID）</font></h5><p>和 PSS 有一些类似，PSS 使用一个初始序列生成伪随机序列，SSS 使用两个初始序列，在循环移位时分别根据 N_(1)_ID 和 N_(2)_ID 进行移位，在 BPSK 调制时，合并成一个伪随机序列。<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412163818.png" alt=""></p>
+<p>此时，我们从 PSS 中已得知 N_(2)_ID，结合 SSS 序列，便可以推算出 N_(1)_ID。</p>
+<p>到此，PCI<font color="#808080">（N_cell_ID = 3 x N_(1)_ID + N_(2)_ID）</font>也就可以算出来了。</p>
+<h3 id="2-获取-DM-RS-和-SSB-Index"><a href="#2-获取-DM-RS-和-SSB-Index" class="headerlink" title="2 获取 DM-RS 和 SSB Index"></a>2 获取 DM-RS 和 SSB Index</h3><p>####2.1 获取 DM-RS</p>
+<p>DM-RS<font color="#808080">（Demodulation Reference Signal，解调参考信号）</font>是在 PBCH 进行传输的。在频域上，各个 DM-RS 间隔 4 个SC，初始偏移为 v<font color="#808080">（v = N_cell_ID mod 4）</font>。<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412165622.png" alt=""></p>
+<h4 id="2-2-识别-SSB-Index"><a href="#2-2-识别-SSB-Index" class="headerlink" title="2.2 识别 SSB Index"></a>2.2 识别 SSB Index</h4><p>基站在 5 ms 周期内，可以发送的 SSB 最大次数为L：在FR1中，3GHz 以上频段 L 为 8，3GHz 以下频段 L 为 4<font color="#808080">（经过 CM 努力，在 TDD 中，2.4GHz 以上 L 也可以为 8）</font>，在 FR2 中，L 为 64。SSB Index 用于区分不同 “时刻” 的 SSB。这里我理解的 SSB Index 为波束 ID？</p>
+<p>协议中定义了 5 种 SSB Pattern<font color="#808080">（SSB分布样式）</font>，来确定各个 SSB 占用的时域资源分布情况。同时，结合 1.1 中的表，可以确定对于大部分确定的频带来说，只支持一种 SSB Pattern，确定了频带，也就确定了 SSB Pattern。对于部分支持两种 SSB SCS 的频带，在 UE 检出 PSS 后，倒推出当前使用的 SSB SCS<font color="#808080">（个人理解：PSS 固定使用 127 个 SC，当确定了 PSS 序列、PSS 的频率范围，也就可以计算出 SSB SCS）</font>，由此再确定 SSB Pattern。<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412173933.png" alt=""></p>
+<p>SSB Index 和 SSB 在 SSB Pattern 的位置对应，但不是基站实际发送 SSB 的序号<font color="#808080">（基站不一定按照最大数量发送 SSB）</font>。UE 通过 PBCH 的 DM-RS，结合 PBCH 额外编码信息可以获得 SSB 。<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412200319.png" alt=""></p>
+<p>$\overline{i}<em>{SSB}$  即为 SSB Index，$i</em>{SSB}$ 为 UE 由 $N^{cell}<em>{ID}$ 生成 8 个序列对 DM-RS 确定的。上图中，如果 L = 4，$i</em>{SSB}$ 为 2 位<font color="#808080">（bit）</font>，在 $i_{SSB}$ 前加上半帧标识<font color="#808080">（nhf、$\overline{a}<em>{\overline{A}+4}$ ）</em></font>就是 $\overline{i}{SSB}$；如果 L= 8，$i_{SSB}$ 为3位，正好和 $\overline{i}<em>{SSB}$ 对应；如果 L = 64，$i</em>{SSB}$ 为6位，低3位和 $\overline{i}<em>{SSB}$ 对应，高 3 位从 PBCH 额外编码信息 $\overline{a}</em>{\overline{A}+5}$、$\overline{a}<em>{\overline{A}+6}$、$\overline{a}</em>{\overline{A}+7}$ 获得。</p>
+<p>由此，UE 获得了 SSB Index。</p>
+<h3 id="2-3-PBCH-额外编码和-MIB"><a href="#2-3-PBCH-额外编码和-MIB" class="headerlink" title="2.3 PBCH 额外编码和 MIB"></a>2.3 PBCH 额外编码和 MIB</h3><h4 id="2-3-1-PBCH-额外编码"><a href="#2-3-1-PBCH-额外编码" class="headerlink" title="2.3.1 PBCH 额外编码"></a>2.3.1 PBCH 额外编码</h4><p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412214604.png" alt=""></p>
+<ol>
+<li>如果 L = 4 or 8， $\overline{a}<em>{\overline{A}+5}$ 为 $k</em>{SSB}$的最高位<font color="#808080">（此时$\overline{a}<em>{\overline{A}+6}$ 和 $\overline{a}</em>{\overline{A}+7}$ 保留）</font>。</li>
+<li>$\overline{a}_{\overline{A}+4}$ 为半帧标识<font color="#808080">（half frame）</font>，指示 SSB 在前半帧还是后半帧。</li>
+<li>$\overline{a}<em>\overline{A}$ 、 $\overline{a}</em>{\overline{A}+1}$ 、 $\overline{a}<em>{\overline{A}+2}$ 、 $\overline{a}</em>{\overline{A}+3}$ 指示 SSB 所在帧的 SFN<font color="#808080">（System Frame Number，系统帧号）</font>的低 4 位。</li>
+</ol>
+<p>####2.3.2 MIB</p>
+<p>PBCH 承载 MIB 信息。<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412214435.png" alt=""></p>
+<ol>
+<li><p>System Frame Number：SFN 的高 6 位，和 PBCH 额外编码的 4 位<font color="#808080">（ $\overline{a}<em>\overline{A}$ 、 $\overline{a}</em>{\overline{A}+1}$ 、 $\overline{a}<em>{\overline{A}+2}$ 、 $\overline{a}</em>{\overline{A}+3}$ ）</font>构成完整的 SFN<font color="#808080">（10位）</font>。</p>
+</li>
+<li><p>Cell Barred：在 SA 场景中是否允许 UE 接入<font color="#808080">（对 EN-DC 场景接入 NR 没有影响）</font></p>
+</li>
+<li><p>Intra Freq Reselection：表示是否允许 UE 同频重选。</p>
+</li>
+<li><p>Sub Carrier Spacing Common：表示 RMSI<font color="#808080">（SIB1）</font>、随机接入的 MSG2 / MSG4、SI-message 使用的SCS，又称为 RMSI SCS。</p>
+</li>
+<li><p>SSB Subcarrier Offset、PDCCH Config SIB1：CORESET 0 相关。</p>
+</li>
+<li><p>DMRS Type A Position：和 PDSCH 默认资源分配有关。</p>
+</li>
+</ol>
+<p>###3 获取 COREST 0</p>
+<p>UE找到 CORESET 0，才能在 PDSCH 接收 RMSI。</p>
+<p>####3.1 Point A 和 获取 CRB_SSB 位置</p>
+<p>在 NR 中，为了描述各种资源的位置，在频域上，每个载波定义了一个参考点：Point A。Point A 的频率对应 CRB 0 的第一个 SC 的中心频率，SSB 相对于 Point A 的偏移分为两部分：RB 粒度的偏移<font color="#808080">（offsetToPointA）</font>和 SC 粒度的偏移<font color="#808080">（参考 SCS，$k_{SSB}$）</font>。</p>
+<p>CRB_SSB<font color="#808080">（CRB 和 SSB 部分重合，且频率最小的 CRB，协议没有这样命名）</font>和 CRB 0 之间的 RB 粒度偏移，单位是 CRB 对应的 RB<font color="#808080">（12 个 SC）</font>，数量记为 $N^{SSB}_{CRB}$，即 Frequency Info DL 的 offset To Point A。</p>
+<p><img src="/var/folders/f2/6jpd5f095sj7sjv5zb_drlfc0000gn/T/com.yinxiang.Mac/WebKitDnD.0skITA/640.jpg" alt="640"></p>
+<p>SSB 和 CRB_SSB 之间的 SC 粒度偏移，记为 $k_{SSB}$，单位是 参考 SCS。</p>
+<p>⚠️注意：上图中，有 4 种不同的 SCS！<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412211732.png" alt=""></p>
+<p>由于 SSB 是按照 GSCN<font color="#808080">（同步栅格）</font>分布的， CRB 是按照 NR ARFCN<font color="#808080">（信道栅格）</font>分布的，并且 SSB 和 CRB 的 SCS 不一定相同。CRB_SSB 的 SCS 和 CRB 的 SCS 是相互独立的，由 MIB 的 Sub Carrier Spacing Common 确定<font color="#808080">（即 RMSI SCS）</font>—— 取值 0 表示 60 kHz，取值 1 表示 120 kHz。参考SCS <font color="#808080">（SSB 相对于 CRB_SSB 的 SC 粒度偏移）</font>的 SCS：在 FR1 中，SCS 固定为 15 kHz；在 FR2 中，SCS 由 MIB 的 Sub Carrier Spacing Common 确定 —— 取值 0 表示 60 kHz，取值 1 表示 120 kHz。</p>
+<p>如前所述，UE 已知 SSB 的位置，由此可以反推 CRB_SSB 的位置。</p>
+<h4 id="3-2-RMSI-和-CORESET-0"><a href="#3-2-RMSI-和-CORESET-0" class="headerlink" title="3.2 RMSI 和 CORESET 0"></a>3.2 RMSI 和 CORESET 0</h4><p>和 LTE 相似，NR 的 SIB1 通过 PDSCH 发送，而 PDSCH 又需要 PDCCH 的 DCI 调度。因此，UE 应从 MIB 中获得调度 RMSI 的 PDCCH 信息，随后，UE<font color="#808080">（使用 SI-RNTI）</font>在 PDCCH 进行盲检，根据调度<font color="#808080">（DCI 1_0）</font>从 PDSCH 获得 RMSI。</p>
+<h5 id="3-2-1-Type-0-CSS"><a href="#3-2-1-Type-0-CSS" class="headerlink" title="3.2.1 Type 0 CSS"></a>3.2.1 Type 0 CSS</h5><p>和 LTE 相似，NR 的 PDCCH 也包括公共搜索空间<font color="#808080">（Common Search Space）</font>和 UE 专用搜索空间<font color="#808080">（Dedicated Search Space）</font>。Type 0 CSS 就是专门用于 RMSI 调度的公共搜索空间。</p>
+<p>和 LTE 不同的是，NR 引入了 CORESET<font color="#808080">（Control Resource Set，控制资源集）</font>概念。CORESET 是 PDCCH 所在物理资源的集合。一个小区可以有多个 CORESET，以 CORESET ID 区分。CORESET 0 就是 Type 0 CSS 对应物理资源的集合。</p>
+<p>#####3.2.2 异常 $k_{SSB}$</p>
+<p>正常的 $k_{SSB}$ 在 FR1 的取值范围是 {0,1,……23}，在 FR2 中的取值范围是{0,1,……11}。FR2 中  $k_{SSB}$ 只需要 4 位，从 MIB 的 ssb subcarrier offset 获得。FR1 中则需要 5 位，低 4 位同样从 MIB 的 ssb subcarrier offset 获得，最高位则从 PBCH 物理层额外编码<font color="#808080">（ $\overline{a}_{\overline{A}+5}$ ）</font>获得。</p>
+<p>可见， $k_{SSB}$ 并没有使用完上述所有资源<font color="#808080">（$2^4 = 16,2^5 = 32$）</font>，在 FR1 中，如果 $k_{SSB}$ &gt; 23，或在 FR2 中，如果 $k_{SSB}$  &gt; 11，都属于异常 $k_{SSB}$ ，表示该 SSB 不存在 Type 0 CSS。</p>
+<p>异常 $k_{SSB}$ 可以帮助 UE 快速找到 Cell Defining SSB。</p>
+<p>#####3.2.2 寻找 Cell Defining SSB</p>
+<p>UE 搜索 SSB，读取 MIB 后，下一个目标就是找到 CORESET 0，而 CORESET 0 的信息就在 MIB 里面。</p>
+<p>和 COREST 0<font color="#808080">（RMSI）</font>关联的 SSB，称为 Cell Defining SSB<font color="#808080">（小区定义 SSB）</font>。除此以外，在频域的不同位置上，小区还可能定义多个测量 SSB —— 这些 SSB 不和 CORESET 0 关联，又或者说，不存在 Type 0 CSS。</p>
+<p><img src="/var/folders/f2/6jpd5f095sj7sjv5zb_drlfc0000gn/T/com.yinxiang.Mac/WebKitDnD.ddLIph/640.png" alt="640"></p>
+<p>如上图，异常 $k_{SSB}$ 为了让UE快点找到 Cell Defining SSB，异常 $k_{SSB}$ 还可以作为索引，结合 RMSI PDCCH Config<font color="#808080">（MIB 的 PDCCH Config SIB1）</font>，<font color="#808080">（间接的）</font>指示下一个 SSB的 GSCN。UE 获得 N_offset_GSCN 后，即可结合当前 SSB 的 GSCN 推算下一个 SSB 的 GSCN： N_Reference_GSCN<font color="#808080">（当前SSB的GSCN）</font>+ N_offset_GSCN<font color="#808080">（下一个 SSB 相对于当前SSB 的 GSCN 偏移）</font>。例：在 FR1 中，如果 $k_{SSB}$ = 26<font color="#808080">（&gt; 23）</font>，RMSI-PDCCH-Config = 255，则N_offset_GSCN = 768，对应 FR1表格中第三行的最后一项。</p>
+<p>除了 $k_{SSB}$ = 30<font color="#808080">（FR1）</font>和 $k_{SSB}$  = 14<font color="#808080">（FR2）</font>保留，$k_{SSB}$ = 31<font color="#808080">（FR1）</font>和$k_{SSB}$ = 15<font color="#808080">（FR2）</font>表示在当前 SSB 的[ N_Reference_GSCN – N_start_GSCN , N_Reference_GSCN + N_end_GSCN ]内，都没有Cell Defining SSB。N_start_GSCN 对应 PDCCH Config SIB1 的高四位，而 N_end_GSCN 对应 PDCCH Config SIB1 的低四位。</p>
+<h5 id="3-2-4-获取-CORESET-0"><a href="#3-2-4-获取-CORESET-0" class="headerlink" title="3.2.4 获取 CORESET 0"></a>3.2.4 获取 CORESET 0</h5><p>UE 搜索 SSB，读取 MIB 后，就可以在 SSB 基础上，通过 CORESET 0 和 SSB 的相对关系找到 CORESET 0。<img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412222421.png" alt=""></p>
+<p>根据 SSB 和 CORESET 0 的分布，SSB 和 CORESET 0 的复用样式<font color="#808080">（Multiplexing Pattern）</font>分为三种 —— Pattern 1 为时分复用<font color="#808080">（此时 CORESET 0 的频域长度总大于 SSB，频域范围包含 SSB）</font>，Pattern 2 和 Pattern 3 为频分复用<font color="#808080">（CORESET 0 在 SSB 同一系统帧）</font>。</p>
+<p>回顾 2.3.2 小节中，MIB 承载的参数 sub Carrier Spacing Common<font color="#808080">（RMSI SCS）</font>、ssb Subcarrier Offset<font color="#808080">（kssb的低四位）</font>和 PDCCH Config SIB1。</p>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412223433.png" alt=""></p>
+<p>######3.2.4.1 PDCCH Config SIB1</p>
+<p>PDCCH Config SIB1 由 8 位组成，将高 4 位和低 4 位拆开，可获得两个索引（Index），取值范围均为 0 ~ 15。使用高 4 位索引 查询 3GPP TS 38.213 表格 13-1 到 13-10，可获得频域索引，即 CORESET 0的复用样式、符号数量<font color="#808080">（时域长度）</font>、RB数量<font color="#808080">（频域长度）</font>和RB偏移<font color="#808080">（频域偏移）</font>，使用低 4 位索引查询 3GPP TS38.213 表格 13-11到 13-15，可获得时域索引，即 CORESET 0 的 SFN、时隙索引和起始符号等。</p>
+<p><img src="/var/folders/f2/6jpd5f095sj7sjv5zb_drlfc0000gn/T/com.yinxiang.Mac/WebKitDnD.AynyNK/640.jpg" alt="640"></p>
+<p>根据 MIB，可以获取 RMSI SCS，结合已获得的 SSB SCS、最小信道带宽<font color="#808080">（Minimum Channel Bandwidth）</font>，可以找到对应查询表格。</p>
+<p>######3.2.4.2 频域寻找</p>
+<p>频域上，根据 offset 从 SSB 找 CORESET 0，方法和找 Point A 相似，参考 3.1 节。Pattern 1 和 上述方式没有太大区别，Pattern 2 和 Pattern 3 如果 SSB SCS 和 RMSI SCS 不同，为了不影响<font color="#808080">（OFDM）</font>子载波的正交性，会在 SSB 和 RMSI 中加一个 RB 作为保护间隔<font color="#808080">（GAP）</font>；SSB SCS 和 RMSI SCS 如果相同，不用加 GAP。例子如下图：</p>
+<p><img src="/var/folders/f2/6jpd5f095sj7sjv5zb_drlfc0000gn/T/com.yinxiang.Mac/WebKitDnD.NcCBj9/640.jpg" alt="640"></p>
+<p>######3.2.4.3 时域寻找</p>
+<ol>
+<li>时域上，Pattern 2 和 Pattern 3 中，CORESET 0 和 SSB 在同一系统帧的同一时隙，或相邻时隙<font color="#808080">（仅适用于Pattern 2）</font>，即 $SFN_C$ = $SF_{SSB,i}$，$n_C$ = $n_{SSB,i}$<font color="#808080">（同一时隙）</font>或$n_C$ = $n_{SSB,i}-1$<font color="#808080">（相邻时隙）</font>。UE 确定 CORESET 0 所在系统帧（$SFN_C$）和时隙（$n_C$）后，再根据 SSB Index<font color="#808080">（i）</font>找到 CORESET 0 的起始符号<font color="#808080">（First Symbol Index）</font>。</li>
+</ol>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412225504.png" alt=""></p>
+<p><em>例，如上图：如果 SSB SCS 为 120 kHz，RMSI SCS 为 60 kHz，“频域索引” 为 8 ~ 11，CORESET 0 时域长度为 1，复用样式为 Pattern 2。可得$SFN_C$ = $SF_{SSB,i}$，$n_C$ = $n_{SSB,i}$，CORESET 0 在对应 SSB 所在系统帧的同一时隙。SSB SCS 为120 kHz，SSB Pattern 为 Case D —— 在 5 ms 周期内，SSB 的起始符号为 { 4 , 8 , 16 , 20 } + 28n，n = { 0 , 1 , 2 , 3 , 5 ,6 , 7 , 8 , 10 , 11 , 12 , 13 , 15 , 16 , 17 , 18 }，L = 64。示图包含 2 个 SSB 时隙，对应 1 个 RMSI 时隙。对于 SSB Index 为 4k、4k + 1、4k + 2、4k + 3 的 SSB，CORESET 0 的起始符号分别为 { 0 , 1 , 6 , 7 } —— 都比SSB靠前。这里的 k，个人理解的是 SSB 和 对应的 RMSI 所在的时隙间隔，以 RMSI 的时隙为准；SSB 0 和 SSB 1 、CORESET 0 和 CORESET 1在同一个时隙中，SSB 2 和 SSB 3 、CORESET 2 和 CORESET 2 相差1个 RMSI 时隙。</em></p>
+<ol start="2">
+<li>Pattern 1 的时域上，CORESET 0 时域表达式变得有点复杂：根据 3GPP TS 38.213 描述，对于 Pattern 1，UE 从时隙 n0 开始，连续监听 2 个时隙。</li>
+</ol>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412231122.png" alt=""></p>
+<p>n0 表达式如上图所示，参数 M 和 O 可从表格 13-11<font color="#808080">（FR1）</font>或 13-12<font color="#808080">（FR2）</font>获得。</p>
+<p>O 表示 SSB Index = 0 对应的 CORESET 0 相对于偶数帧起始位置的偏移，单位为 ms。由于 1 ms 包含 $2^μ$ 时隙，O x $2^μ$ 表示 O ms 包含的时隙数<font color="#808080">（方便后面数时隙）</font>。在 FR1 中，O 取值可为 0、2、5、7；在 FR2 中，O 取值可为 0、2.5、5、7.5。后续提到的时隙序号，都指偏移O ms 之后的序号。O 指示第一个 SSB 对应的 CORESET 0，其他 SSB 对应的 CORESET 0 依次排在后面。</p>
+<p>M 表示相邻两个 SSB 对应的 CORESET 0 的间隔，单位为时隙。</p>
+<p>在表格中，O 和 M 之间还有一列，指示 1 个时隙包含的搜索空间数量，这里记为 N。</p>
+<p><img src="https://wuzhi-1257817837.cos.ap-chengdu.myqcloud.com/markdown/20200412231924.png" alt=""></p>
+<p>例，如上图：N = 2，M = 1/2，$N^{CORESET}<em>{symbol}$ = 1，SSB INDEX 为偶数时，First Symbol Index 为 0，SSB INDEX 为奇数时，First Symbol Index为 $N^{CORESET}</em>{symbol}$<font color="#808080">（1）</font>。SSB INDEX = 0 / 1 的搜索空间的第 1、2 时隙，SSB INDEX = 2 / 3 的搜索空间为第 2、3 时隙 —— 1 个时隙包含2 个搜索空间<font color="#808080">（N =2）</font>，各使用不同的符号（符号 0 或符号 1）。SSB INDEX = 0 / 1 的搜索空间在同一时隙内，视为间隔 M = 1/2<font color="#808080">（时隙）</font>。累计的搜索空间会向下取整<font color="#808080">（SSB 1 的移动搜索空间位1/2）</font>，如果不满 1，搜索空间不会往下移动。</p>
+<h3 id="4-获取-RMSI"><a href="#4-获取-RMSI" class="headerlink" title="4 获取 RMSI"></a>4 获取 RMSI</h3>
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Older Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2019/09/29/持续行动/读书笔记/学会提问/【持续行动】《学会提问》读书笔记Day 1/" title="【持续行动】《学会提问》读书笔记Day 1">【持续行动】《学会提问》读书笔记Day 1</a></h2>
+                <p class="excerpt">
+                
+                前言～第四章（PXII～P58）5W1H、六何分析法
+1、论题与结论
+2、理由（论证） 
+
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-09-28T23:38:00.000Z" class="post-list__meta--date date">2019-09-29</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="tag-link" href="/tags/scalers/">scalers</a>, <a class="tag-link" href="/tags/学会提问/">学会提问</a>, <a class="tag-link" href="/tags/打卡/">打卡</a>, <a class="tag-link" href="/tags/持续行动/">持续行动</a>, <a class="tag-link" href="/tags/读书笔记/">读书笔记</a>
+</span><a class="btn-border-small" href="/2019/09/29/持续行动/读书笔记/学会提问/【持续行动】《学会提问》读书笔记Day 1/">继续阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 梧枝 - 本站点采用 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a href="http://hexo.io">Hexo</a> 搭建，使用 <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
